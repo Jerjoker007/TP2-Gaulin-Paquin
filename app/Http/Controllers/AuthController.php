@@ -3,8 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    //
+    public function login(LoginUserRequest $request) {
+        try {
+            $request->validated();
+            if (Auth::attempt($request->toArray())) {
+
+                $token = $request->user()->createToken('login');
+
+                return (response()->json([ 
+                    'token' => $token->plainTextToken
+                ]))->setStatusCode(OK);
+            } else {
+                abort(UNAUTHORIZED, 'Unauthorized');
+            }
+        } catch (Exception $e) {
+            abort(SERVER_ERROR, 'Server error');
+        }
+    }
+    
+    public function register(StoreUserRequest $request) {
+        try {
+            $request->validated();
+            $user = User::create($request->toArray());
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            return (new UserResource($user))->response()->setStatusCode(CREATED);
+        } catch (Exception $e) {
+            abort(SERVER_ERROR, 'Server error');
+        }
+    }
+
+    public function logout(Request $request) {
+        
+    }
+
+    public function refreshToken() {
+
+    }
 }
