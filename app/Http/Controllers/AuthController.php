@@ -43,10 +43,27 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        
+        try {
+            //https://laravel.com/docs/12.x/sanctum#revoking-tokens
+            $request->user()->currentAccessToken()->delete();
+            return response()->json([
+                'message' => "Logged out"
+            ])->setStatusCode(OK);
+        } catch (Exception $e) {
+            abort(SERVER_ERROR, 'Server error');
+        }
     }
 
-    public function refreshToken() {
-
+    public function refreshToken(Request $request) {
+        try {
+            //https://laravel.com/docs/12.x/sanctum#revoking-tokens
+            $request->user()->currentAccessToken()->delete();
+            $token = $request->user()->createToken('login');
+            return response()->json([
+                'token' => $token->plainTextToken
+            ])->setStatusCode(OK);
+        } catch (Exception $e) {
+            abort(SERVER_ERROR, 'Server error');
+        }
     }
 }
