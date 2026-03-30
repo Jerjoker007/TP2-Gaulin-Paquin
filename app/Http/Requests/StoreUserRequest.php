@@ -12,7 +12,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,11 +23,12 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required | string',
+            'first_name' => 'required | string',
+            'last_name' => 'required | string',
             'email' => 'required | email:rfc,strict,filter | unique:users',
             'login' => 'required | unique:users',
             //https://laravel.com/docs/12.x/validation#validating-passwords
-            'password' => 'required | Password::min(10)->letters()->numbers()'
+            'password' => ['required', Password::min(10)->letters()->numbers()]
         ];
     }
 }
