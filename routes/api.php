@@ -12,8 +12,8 @@ Route::middleware('throttle:5,1')->group(function () {
     Route::post('/signup', 'App\Http\Controllers\AuthController@register');
     Route::post('/signin', 'App\Http\Controllers\AuthController@login');
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/me', 'App\Http\Controllers\AuthController@getUser');
-        Route::post('/refresh', 'App\Http\Controllers\AuthController@refreshToken');
+        Route::get('/me', 'App\Http\Controllers\AuthController@me');
+        Route::post('/refresh', 'App\Http\Controllers\AuthController@refresh');
         Route::post('/signout', 'App\Http\Controllers\AuthController@logout');
     });
 });
