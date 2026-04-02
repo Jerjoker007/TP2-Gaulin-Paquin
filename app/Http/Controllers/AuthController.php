@@ -15,7 +15,7 @@ use App\Models\User;
 #[OA\SecurityScheme(
     securityScheme: "sanctum",
     type: "apiKey",
-    description: "Enter token in format (Bearer <token>)",
+    description: "Entrer le token sous le format (Bearer TOKEN)",
     name: "Authorization",
     in: "header"
 )]
@@ -123,6 +123,15 @@ class AuthController extends Controller
                         ]
                     ]
                 )
+            ),
+            new OA\Response(
+                response: 401, 
+                description: "Non authorisé",
+                content: new OA\JsonContent(
+                    example: [
+                        "message" => "Unauthorized"
+                    ]
+                )
             )
         ]
     )]
@@ -149,15 +158,18 @@ class AuthController extends Controller
         summary: "Révocation des tokens de l’utilisateur",
         description: "La route est throttled à 5 requête par minute.",
         tags: ["Auth"],
-        security: [
-            [
-                "sanctum" => []
-            ]
-        ],
+        security: [["sanctum" => []]],
         responses: [
             new OA\Response(
+                response: "default",
+                description: "Default JSON response",
+                content: [
+                    "application/json" => new OA\JsonContent()
+                ]
+            ),
+            new OA\Response(
                 response: 204, 
-                description: "Utilisateur deconnecté"
+                description: "Utilisateur deconnecté",
             ),
             new OA\Response(
                 response: 401, 
@@ -185,11 +197,7 @@ class AuthController extends Controller
         summary: "Rafraichissement du token existant",
         description: "La route est throttled à 5 requête par minute.",
         tags: ["Auth"],
-        security: [
-            [
-                "sanctum" => []
-            ]
-        ],
+        security: [["sanctum" => []]],
         responses: [
             new OA\Response(
                 response: 200, 
@@ -229,11 +237,7 @@ class AuthController extends Controller
         summary: "Accès à l’utilisateur connecté",
         description: "La route est throttled à 5 requête par minute.",
         tags: ["Auth"],
-        security: [
-            [
-                "sanctum" => []
-            ]
-        ],
+        security: [["sanctum" => []]],
         responses: [
             new OA\Response(
                 response: 200, 

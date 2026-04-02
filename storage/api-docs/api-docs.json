@@ -156,6 +156,17 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Non authorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -169,6 +180,14 @@
                 "description": "La route est throttled à 5 requête par minute.",
                 "operationId": "b46f8611fc7d1123f2a3d573cee661c4",
                 "responses": {
+                    "default": {
+                        "description": "Default JSON response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
                     "204": {
                         "description": "Utilisateur deconnecté"
                     },
@@ -280,7 +299,7 @@
         "securitySchemes": {
             "sanctum": {
                 "type": "apiKey",
-                "description": "Enter token in format (Bearer <token>)",
+                "description": "Entrer le token sous le format (Bearer TOKEN)",
                 "name": "Authorization",
                 "in": "header"
             }
