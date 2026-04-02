@@ -140,6 +140,25 @@ class AuthTest extends TestCase
         $response->assertStatus(OK);
     }
 
+    public function test_route_refresh_with_multiple_tokens()
+    {
+        $user;
+        Sanctum::actingAs(
+            $user = User::factory()->create(), ['*']
+        );
+        $user->createToken('test');
+
+
+        $response = $this->postJson('api/refresh', []);
+        
+        //https://docs.phpunit.de/en/12.5/assertions.html#assertcount
+        $this->assertCount(2, Auth::user()->tokens()->get());
+        $response->assertJsonStructure([
+            'token'
+        ]);
+        $response->assertStatus(OK);
+    }
+
     public function test_route_signout_without_token()
     {
         $response = $this->postJson('api/signout', []);
@@ -153,6 +172,25 @@ class AuthTest extends TestCase
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']
         );
+
+        $response = $this->postJson('api/signout', []);
+        
+        $this->assertCount(0, $user->tokens);
+        $this->assertDatabaseHas('users', [
+            "email" => $user->email,
+            "login" => $user->login
+        ]);
+        $response->assertStatus(NO_CONTENT);
+    }
+
+    public function test_route_signout_with_multiple_tokens()
+    {
+        $user;
+        Sanctum::actingAs(
+            $user = User::factory()->create(), ['*']
+        );
+        $user->createToken('test');
+        $user->createToken('test');
 
         $response = $this->postJson('api/signout', []);
         
