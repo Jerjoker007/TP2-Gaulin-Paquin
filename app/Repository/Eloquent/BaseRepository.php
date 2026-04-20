@@ -16,13 +16,13 @@ class BaseRepository implements RepositoryInterface
     }
 
     /**
-    * @param array $attributes
+    * @param array $content
     *
     * @return Model
     */
-    public function create(array $attributes): Model
+    public function create(array $content): Model
     {
-        return $this->model->create($attributes);
+        return $this->model->create($content);
     }
  
     /**
@@ -55,7 +55,8 @@ class BaseRepository implements RepositoryInterface
     public function update(int $id, array $content)
     {
         $item = $this->model->findOrFail($id);
-        return $item->update($attributes);
+        $item->update($content);
+        return $item;
     }
 }
 

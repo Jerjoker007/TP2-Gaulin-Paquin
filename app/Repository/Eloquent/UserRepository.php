@@ -10,6 +10,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     public function __construct()
     {
-        parent::__construct(Film::class);
+        parent::__construct(User::class);
     }
 }

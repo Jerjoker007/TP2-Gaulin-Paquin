@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\Sanctum;
 use App\Models\User;
+use App\Models\Role;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -67,6 +68,7 @@ class AuthTest extends TestCase
 
     public function test_route_signup_add_to_data_base(): void 
     {
+        Role::create([ "name" => "user"]);
         $response = $this->postJson('/api/signup', self::USER);
         $response->assertStatus(CREATED);
         $this->assertDatabaseHas('users', [
@@ -87,6 +89,7 @@ class AuthTest extends TestCase
 
     public function test_route_signin_with_bad_credentials()
     {
+        Role::create([ "name" => "user"]);
         $this->postJson('api/signup', self::USER);
 
         $response = $this->postJson('/api/signin', [
@@ -98,6 +101,7 @@ class AuthTest extends TestCase
 
     public function test_route_signin_to_an_account()
     {
+        Role::create([ "name" => "user"]);
         $this->postJson('/api/signup', self::USER);
 
         $response = $this->postJson('/api/signin', [
@@ -125,6 +129,7 @@ class AuthTest extends TestCase
 
     public function test_route_refresh_with_token()
     {
+        Role::create([ "name" => "user"]);
         $user;
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']
@@ -142,6 +147,7 @@ class AuthTest extends TestCase
 
     public function test_route_refresh_with_multiple_tokens()
     {
+        Role::create([ "name" => "user"]);
         $user;
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']
@@ -168,6 +174,7 @@ class AuthTest extends TestCase
 
     public function test_route_signout_with_token()
     {
+        Role::create([ "name" => "user"]);
         $user;
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']
@@ -185,6 +192,7 @@ class AuthTest extends TestCase
 
     public function test_route_signout_with_multiple_tokens()
     {
+        Role::create([ "name" => "user"]);
         $user;
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']
@@ -211,6 +219,7 @@ class AuthTest extends TestCase
 
     public function test_route_me_with_token()
     {
+        Role::create([ "name" => "user"]);
         $user;
         Sanctum::actingAs(
             $user = User::factory()->create(), ['*']

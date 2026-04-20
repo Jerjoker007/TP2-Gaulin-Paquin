@@ -10,6 +10,6 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
 {
     public function __construct()
     {
-        parent::__construct(Film::class);
+        parent::__construct(Review::class);
     }
 }
