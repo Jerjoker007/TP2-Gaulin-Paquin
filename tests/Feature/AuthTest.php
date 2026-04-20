@@ -21,6 +21,7 @@ class AuthTest extends TestCase
     "email" => "example@test.com",
     "login" => "test",
     "password" => "test123456",
+    "password_confirmation" => "test123456",
     "phone" => "418-555-1234"
     ];
 
