@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class RegisterUserRequest extends FormRequest
+class EquipmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +22,10 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required | string',
-            'last_name' => 'required | string',
-            'email' => 'required | email:rfc,strict,filter | unique:users',
-            'login' => 'required | unique:users',
-            //https://laravel.com/docs/12.x/validation#validating-passwords
-            'password' => ['required', 'confirmed', Password::min(10)->letters()->numbers()]
+            'name' => 'required | string | max:100',
+            'description' => 'required | string',
+            'daily_price' => 'required | numeric | decimal:0,2 | max:9999.99',
+            'category_id' => 'required | integer:strict | exists:categories,id'
         ];
     }
 }
