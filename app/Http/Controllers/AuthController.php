@@ -73,7 +73,6 @@ class AuthController extends Controller
             new OA\Response(
                 response: 429, 
                 description: "Trop de requêtes",
-                content: new OA\JsonContent()
             )
         ]
     )]
@@ -146,8 +145,7 @@ class AuthController extends Controller
             ),
             new OA\Response(
                 response: 429, 
-                description: "Trop de requêtes",
-                content: new OA\JsonContent()
+                description: "Trop de requêtes"
             )
         ]
     )]
@@ -198,8 +196,7 @@ class AuthController extends Controller
             ),
             new OA\Response(
                 response: 429, 
-                description: "Trop de requêtes",
-                content: new OA\JsonContent()
+                description: "Trop de requêtes"
             )
         ]
     )]
@@ -240,8 +237,7 @@ class AuthController extends Controller
             ),
             new OA\Response(
                 response: 429, 
-                description: "Trop de requêtes",
-                content: new OA\JsonContent()
+                description: "Trop de requêtes"
             )
         ]
     )]
@@ -291,8 +287,7 @@ class AuthController extends Controller
             ),
             new OA\Response(
                 response: 429, 
-                description: "Trop de requêtes",
-                content: new OA\JsonContent()
+                description: "Trop de requêtes"
             )
         ]
     )]

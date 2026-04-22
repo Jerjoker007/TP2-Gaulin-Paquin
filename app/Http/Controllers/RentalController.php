@@ -25,6 +25,7 @@ class RentalController extends Controller
         responses: [
             new OA\Response(response: 200, description: "Locations récupérées"),
             new OA\Response(response: 401, description: "Non authentifié"),
+            new OA\Response(response: 429, description: "Trop de requêtes")
         ]
     )]
     public function index()

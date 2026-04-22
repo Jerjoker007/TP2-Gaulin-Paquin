@@ -39,6 +39,7 @@ class UserController extends Controller
             new OA\Response(response: 200, description: "Utilisateur mis à jour"),
             new OA\Response(response: 401, description: "Non authentifié"),
             new OA\Response(response: 422, description: "Données invalides"),
+            new OA\Response(response: 429, description: "Trop de requêtes")
         ]
     )]
     public function update(UpdateUserRequest $request) {

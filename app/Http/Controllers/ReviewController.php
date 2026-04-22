@@ -74,7 +74,7 @@ class ReviewController extends Controller
                 description: "Données invalides",
                 content: new OA\JsonContent()
             ),
-
+            new OA\Response(response: 429, description: "Trop de requêtes")
         ]
     )]
     public function store(CreateReviewRequest $request)
