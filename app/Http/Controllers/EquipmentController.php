@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Repository\EquipmentRepositoryInterface;
 use App\Http\Requests\EquipmentRequest;
 use App\Http\Resources\EquipmentResource;
+use App\Exceptions\EquipmentInUseException;
 
 class EquipmentController extends Controller
 {
@@ -96,8 +97,7 @@ class EquipmentController extends Controller
     public function store(EquipmentRequest $request)
     {
         try {
-            $user = Auth::user();
-            if (($user->role)->name != 'admin')
+            if (Auth::user()->role->name != 'admin')
             {
                 abort(FORBIDDEN, "Forbidden");
             }
@@ -204,8 +204,7 @@ class EquipmentController extends Controller
     public function update(EquipmentRequest $request, int $id)
     {
         try {
-            $user = Auth::user();
-            if (($user->role)->name != 'admin')
+            if (Auth::user()->role->name != 'admin')
             {
                 abort(FORBIDDEN, "Forbidden");
             }
@@ -276,6 +275,15 @@ class EquipmentController extends Controller
                 )
             ),
             new OA\Response(
+                response: 409, 
+                description: "Équipement présentement utilisé",
+                content: new OA\JsonContent(
+                    example: [
+                        "message" => "Equipment is in used and cannot be deleted."
+                    ]
+                )
+            ),
+            new OA\Response(
                 response: 429, 
                 description: "Trop de requêtes",
                 content: new OA\JsonContent()
@@ -285,8 +293,7 @@ class EquipmentController extends Controller
     public function destroy(int $id)
     {
         try {
-            $user = Auth::user();
-            if (($user->role)->name != 'admin')
+            if (Auth::user()->role->name != 'admin')
             {
                 abort(FORBIDDEN, "Forbidden");
             }
@@ -296,6 +303,8 @@ class EquipmentController extends Controller
         
         } catch (QueryException $e) {
             abort(NOT_FOUND, 'Invalid Id');
+        } catch (EquipmentInUseException $e){
+            abort(CONFLICT, $e->getMessage());
         } catch (Exception $e) {
             abort(SERVER_ERROR, 'Server error');
         }

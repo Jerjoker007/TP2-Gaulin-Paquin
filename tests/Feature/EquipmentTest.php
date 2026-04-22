@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Equipment;
+use App\Models\Rental;
 use Tests\TestCase;
 
 class EquipmentTest extends TestCase
@@ -263,6 +264,33 @@ class EquipmentTest extends TestCase
         $response = $this->deleteJson("/api/equipment/1");
 
         $response->assertStatus(NOT_FOUND);
+    }
+
+    public function test_route_delete_equipment_used_in_rental(): void 
+    {
+        $role = Role::create(["name" => "admin"]);
+        $user;
+        Sanctum::actingAs(
+            $user = User::factory()->create(["role_id" => $role->id]), ['*']
+        );
+        $category = Category::create(self::CATEGORY);
+        $json = [
+            ...self::EQUIPMENT,
+            "category_id" => $category->id
+        ];
+        $equipment = Equipment::create($json);
+        Rental::create([
+            'equipment_id' => $equipment->id, 
+            'user_id' => $user->id, 
+            'start_date' => '2026-01-03', 
+            'end_date' => '2026-02-01', 
+            'total_price' => 0.52
+        ]);
+
+        $response = $this->deleteJson("/api/equipment/{$equipment->id}");
+
+        $response->assertStatus(CONFLICT);
+        $this->assertDatabaseHas('equipment', self::EQUIPMENT);
     }
 
     public function test_route_delete_equipment(): void 
