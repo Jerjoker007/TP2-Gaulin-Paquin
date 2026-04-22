@@ -428,6 +428,14 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Le client n'a pas fait cette location",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Location non trouvée",
                         "content": {

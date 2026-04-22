@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateReviewRequest;
 use App\Repository\ReviewRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use App\Exceptions\NotUserRentalException;
 
 use OpenApi\Attributes as OA;
 
@@ -54,6 +55,11 @@ class ReviewController extends Controller
                 content: new OA\JsonContent()
             ),
             new OA\Response(
+                response: 403, 
+                description: "Le client n'a pas fait cette location",
+                content: new OA\JsonContent()
+            ),
+            new OA\Response(
                 response: 404, 
                 description: "Location non trouvée",
                 content: new OA\JsonContent()
@@ -84,6 +90,9 @@ class ReviewController extends Controller
             }
 
             return response()->json($review)->setStatusCode(CREATED);
+        }
+        catch(NotUserRentalException $e) {
+            abort($e->status(), $e->message());
         }
         catch (QueryException $e) {
             abort(NOT_FOUND, 'Rental not found');
